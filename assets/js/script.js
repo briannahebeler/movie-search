@@ -1,33 +1,16 @@
 $(document).ready(function () {
 
+    // array of session search history 
     var searchHistory = [];
 
+    // on click of the search button the search movie function will be run using the users input
     $("#search-button").on("click", function () {
         var movie = $("#movie-input").val();
         console.log("searched movie", movie);
         searchMovie(movie);
     })
 
-
-    function saveSearch(searchedMovie) {
-        localStorage.setItem("savedSearch", searchedMovie);
-
-        if(!searchHistory.includes(searchedMovie)){
-            searchHistory.push(searchedMovie);
-            console.log("search history", searchHistory);
-            
-            var movieTitle = $("<h6>").addClass("card-body").text(searchedMovie);
-            var card = $("<div>").addClass("card");
-            card.append(movieTitle);
-
-            $("#search-history").append(card);
-
-            movieTitle.on("click", function() {
-                searchMovie(this.innerHTML);
-            })
-        }
-    }
-
+    // the users inputted movie will be searched using the omdb api to gather select data on the movie
     function searchMovie(searchedMovie) {
         var queryURL = "https://www.omdbapi.com/?t=" + searchedMovie + "&apikey=trilogy";
 
@@ -36,6 +19,8 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (response) {
             console.log(response);
+
+            // the searched movie will be saved using the save search function
             saveSearch(searchedMovie);
 
             $("#movies-view").empty();
@@ -74,125 +59,42 @@ $(document).ready(function () {
         })
     }
 
+    // this function saves the users movie search in the local storage 
+    function saveSearch(searchedMovie) {
+        // localStorage.setItem("savedSearch", searchedMovie);
+
+        // if the movie isnt already in the search history array it will be added
+        if(!searchHistory.includes(searchedMovie)){
+            searchHistory.push(searchedMovie);
+            console.log("search history", searchHistory);
+            localStorage.setItem("savedSearch", searchedMovie);
+
+            // displays new search on the displayed movie search history card
+            var movieTitle = $("<h6>").addClass("card-body").text(searchedMovie);
+            var card = $("<div>").addClass("card");
+            card.append(movieTitle);
+            $("#search-history").append(card);
+
+            // if the user clicks on the past search it will re-run the search and display movie info
+            movieTitle.on("click", function() {
+                searchMovie(this.innerHTML);
+            })
+        }
+    }
+
     function displaySearchHistory() {
         var history = localStorage.getItem("savedSearch");
         console.log("history: " + history)
+        //if there is no movie search history nothing will be displayed
         if (history === "null") {
             return
-        } else {
+        } 
+        // if there is movie history the last searched movie will be displayed on page reload
+        else {
             searchMovie(history);
         }
     }
 
     displaySearchHistory();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // // array of movies
-    // var movies = [];
-
-    // function displayMovieInfo() {
-
-    //     var movie = $(this).attr("data-name");
-    //     var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
-
-    //     // AJAX call for the movie search
-    //     $.ajax({
-    //         url: queryURL,
-    //         method: "GET"
-    //     }).then(function (response) {
-
-    //         console.log(response);
-
-    //         // Creates a div to hold the movie
-    //         var movieDiv = $("<div>");
-    //         // Retrieves the Rating Data
-    //         var rating = response.Rated;
-    //         // Creates an element to have the rating displayed
-    //         var ratingP = $("<p>").text("Rating: " + rating);
-    //         // Displays the rating
-    //         movieDiv.append(ratingP);
-
-    //         // Retrieves the release year
-    //         var year = response.Released;
-    //         // Creates an element to hold the release year
-    //         var yearP = $("<p>").text("Released: " + year);
-    //         // Displays the release year
-    //         movieDiv.append(yearP);
-
-    //         // Retrieves the plot
-    //         var plot = response.Plot;
-    //         // Creates an element to hold the plot
-    //         var plotP = $("<p>").text("Plot: " + plot);
-    //         // Appends the plot
-    //         movieDiv.append(plotP);
-
-    //         // Creates an element to hold the image
-    //         var imageUrl = response.Poster;
-    //         var image = $("<img>").attr("src", imageUrl);
-    //         // Appends the image
-    //         movieDiv.append(image);
-
-    //         $("#movies-view").append(movieDiv);
-    //     });
-
-    // }
-
-    // // Function for displaying movie data
-    // function renderButtons() {
-
-    //     // Deletes the movies prior to adding new movies
-    //     // (this is necessary otherwise you will have repeat buttons)
-    //     $("#search-history").empty();
-    //     $("#movies-view").empty();
-    //     // Loops through the array of movies
-    //     for 
-    //     (var i = 0; i < movies.length; i++)
-    //     // (var i = movies.length; i = 0; i--) 
-    //     {
-
-    //         // Then dynamicaly generates buttons for each movie in the array
-    //         // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-    //         var a = $("<button>");
-    //         // Adds a class of movie to our button
-    //         a.addClass("movie");
-    //         // Added a data-attribute
-    //         a.attr("data-name", movies[i]);
-    //         // Provided the initial button text
-    //         a.text(movies[i]);
-    //         // Added the button to the buttons-view div
-    //         $("#search-history").append(a);
-    //     }
-    // }
-
-    // // This function handles events where the add movie button is clicked
-    // $("#search-button").on("click", function (event) {
-    //     event.preventDefault();
-    //     // This line of code will grab the input from the textbox
-    //     var movie = $("#movie-input").val().trim();
-
-    //     // The movie from the textbox is then added to our array
-    //     movies.push(movie);
-
-    //     // Calling renderButtons which handles the processing of our movie array
-    //     renderButtons();
-    // });
-
-    // // Adding click event listeners to all elements with a class of "movie"
-    // $(document).on("click", ".movie", displayMovieInfo);
-
-    // // Calling the renderButtons function to display the initial buttons
-    // renderButtons();
 
 })

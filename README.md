@@ -2,7 +2,7 @@
 ![MIT](https://img.shields.io/badge/license-MIT-blueviolet)
 
 ## Description
-This application features dynamically updated HTML and CSS to create a Movie Search Engine. Through the utilization of the OMBD API this application is able to retrieve the users searched movie information including: rating, release date, plot, and movie poster. 
+This application features dynamically updated HTML and CSS to create a Movie Search Engine. Through the utilization of the OMDB API this application is able to retrieve the users searched movie information including: rating, release date, plot, and movie poster. 
 
 <!-- ## Usage
 * add screenshot & usage info here -->

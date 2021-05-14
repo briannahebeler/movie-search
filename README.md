@@ -21,5 +21,5 @@ To contribute to this project you can fork this GitHub repository.
 If you have any additional questions about this application you can reach out to me at briannahebeler@gmail.com.
 You can check out some of my other projects at briannahebeler (https://github.com/briannahebeler).
 
-<!-- ## Link
-https://briannahebeler.github.io/Weather-Dashboard/ -->
+## Link
+https://briannahebeler.github.io/movie-search/

@@ -1,102 +1,90 @@
 $(document).ready(function () {
 
-    function displayMovieInfo(movie) {
+    var searchHistory = [];
 
-        var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
-        console.log(queryURL)
-        // Creates AJAX call for the specific movie searched
+    $("#search-button").on("click", function () {
+        var movie = $("#movie-input").val();
+        console.log("searched movie", movie);
+        searchMovie(movie);
+    })
+
+
+    function saveSearch(searchedMovie) {
+        localStorage.setItem("savedSearch", searchedMovie);
+
+        if(!searchHistory.includes(searchedMovie)){
+            searchHistory.push(searchedMovie);
+            console.log("search history", searchHistory);
+            
+            var movieTitle = $("<h6>").addClass("card-body").text(searchedMovie);
+            var card = $("<div>").addClass("card");
+            card.append(movieTitle);
+
+            $("#search-history").append(card);
+
+            movieTitle.on("click", function() {
+                searchMovie(this.innerHTML);
+            })
+        }
+    }
+
+    function searchMovie(searchedMovie) {
+        var queryURL = "https://www.omdbapi.com/?t=" + searchedMovie + "&apikey=trilogy";
+
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (response) {
             console.log(response);
-        });
+            saveSearch(searchedMovie);
+
+            $("#movies-view").empty();
+
+            // Creates a div to hold the movie
+            var movieDiv = $("<div>");
+            // Retrieves the Rating Data
+            var rating = response.Rated;
+            // Creates an element to have the rating displayed
+            var ratingP = $("<p>").text("Rating: " + rating);
+            // Displays the rating
+            movieDiv.append(ratingP);
+
+            // Retrieves the release year
+            var year = response.Released;
+            // Creates an element to hold the release year
+            var yearP = $("<p>").text("Released: " + year);
+            // Displays the release year
+            movieDiv.append(yearP);
+
+            // Retrieves the plot
+            var plot = response.Plot;
+            // Creates an element to hold the plot
+            var plotP = $("<p>").text("Plot: " + plot);
+            // Appends the plot
+            movieDiv.append(plotP);
+
+            // Creates an element to hold the image
+            var imageUrl = response.Poster;
+            var image = $("<img>").attr("src", imageUrl);
+            // Appends the image
+            movieDiv.append(image);
+
+            $("#movies-view").append(movieDiv);
+
+        })
     }
 
-    $("#search-button").on("click", function () {
-        var movie = $("#movie-input").val();
-        console.log(movie);
-        displayMovieInfo(movie);
-    })
+    function displaySearchHistory() {
+        var history = localStorage.getItem("savedSearch");
+        console.log("history: " + history)
+        if (history === "null") {
+            return
+        } else {
+            searchMovie(history);
+        }
+    }
 
-    // $("#search-button").on("click", function () {
-    //     var searchValue = $("#movie-input").val();
-    //     searchMovie(searchValue);
-    //     $("movie-input").val("");
-    //     // searchMovie(searchValue);
-    // })
-
-    // // var searchHistory = [];
-
-    // // function saveSearch(searchedMovie) {
-    // //     localStorage.setItem("savedSearch", searchedMovie);
-
-    // //     if(!searchHistory.includes(searchedMovie)){
-    // //         searchHistory.push(searchedMovie);
-    // //         var movieTitle = $("<h6>").addClass("card-body").text(searchedMovie);
-    // //         var card = $("<div>").addClass("card");
-    // //         card.append(movieTitle);
-
-    // //         $("#searchHistory").append(card);
-
-    // //         movieTitle.on("click", function() {
-    // //             searchMovie(this.innerHTML);
-    // //         })
-    // //     }
-    // // }
-
-    // function searchMovie(searchedMovie) {
-    //     var queryURL = "https://www.omdbapi.com/?t=" + searchedMovie + "&apikey=trilogy";
-
-    //     $.ajax({
-    //         url: queryURL,
-    //         method: "GET"
-    //     }).then(function (response) {
-    //         console.log(response);
-    //         saveSearch(searchedMovie);
-
-    //         $("#movies-view").empty();
-
-    //         // Creates a div to hold the movie
-    //         var movieDiv = $("<div>");
-    //         // Retrieves the Rating Data
-    //         var rating = response.Rated;
-    //         // Creates an element to have the rating displayed
-    //         var ratingP = $("<p>").text("Rating: " + rating);
-    //         // Displays the rating
-    //         movieDiv.append(ratingP);
-
-    //         // Retrieves the release year
-    //         var year = response.Released;
-    //         // Creates an element to hold the release year
-    //         var yearP = $("<p>").text("Released: " + year);
-    //         // Displays the release year
-    //         movieDiv.append(yearP);
-
-    //         // Retrieves the plot
-    //         var plot = response.Plot;
-    //         // Creates an element to hold the plot
-    //         var plotP = $("<p>").text("Plot: " + plot);
-    //         // Appends the plot
-    //         movieDiv.append(plotP);
-
-    //         // Creates an element to hold the image
-    //         var imageUrl = response.Poster;
-    //         var image = $("<img>").attr("src", imageUrl);
-    //         // Appends the image
-    //         movieDiv.append(image);
-
-    //         $("#movies-view").append(movieDiv);
-
-    //     })
-    // }
-
-    // function displaySearchHistory() {
-    //     var history = localStorage.getItem("savedSearch");
-    //     searchMovie(history);
-    // }
-
-    // displaySearchHistory();
+    displaySearchHistory();
 
 
 

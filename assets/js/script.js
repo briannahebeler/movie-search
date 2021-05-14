@@ -25,36 +25,56 @@ $(document).ready(function () {
 
             $("#movies-view").empty();
 
-            // Creates a div to hold the movie
-            var movieDiv = $("<div>");
-            // Retrieves the Rating Data
-            var rating = response.Rated;
-            // Creates an element to have the rating displayed
-            var ratingP = $("<p>").text("Rating: " + rating);
-            // Displays the rating
-            movieDiv.append(ratingP);
+            //test
+            var list = $("<list>");
+            list.attr("class", "list-group-item");
+            $("#movies-view").append(list);
 
-            // Retrieves the release year
-            var year = response.Released;
-            // Creates an element to hold the release year
-            var yearP = $("<p>").text("Released: " + year);
-            // Displays the release year
-            movieDiv.append(yearP);
+            var row = $("<div>");
+            row.attr("class", "row");
+            list.append(row);
 
-            // Retrieves the plot
-            var plot = response.Plot;
+            var col1 = $("<div>");
+            col1.attr("class", "col-sm-4");
+            row.append(col1);
+
+            var poster = $("<img>");
+            poster.attr("class", "img-thumbnail img-fluid w-100");
+            poster.attr("src", response.Poster);
+            poster.attr("alt", response.Title);
+            col1.append(poster);
+
+            var col2 = $("<div>");
+            col2.attr("class", "col-sm-8");
+            row.append(col2);
+
+            var head = $("<h3>").text(response.Title);
+            col2.append(head);
+
             // Creates an element to hold the plot
-            var plotP = $("<p>").text("Plot: " + plot);
-            // Appends the plot
-            movieDiv.append(plotP);
+            var plot = $("<p>").text(response.Plot);
+            // Displays the plot
+            col2.append(plot);
 
-            // Creates an element to hold the image
-            var imageUrl = response.Poster;
-            var image = $("<img>").attr("src", imageUrl);
-            // Appends the image
-            movieDiv.append(image);
+            // Creates an element to hold the release year
+            var year = $("<p>").text("Released: " + response.Released);
+            // Displays the release year
+            col2.append(year);
 
-            $("#movies-view").append(movieDiv);
+            // Creates an element to hold the plot
+            var director = $("<p>").text("Director: " + response.Director);
+            // Displays the plot
+            col2.append(director);
+
+            // Creates an element to hold the plot
+            var actors = $("<p>").text("Actors: " + response.Actors);
+            // Displays the plot
+            col2.append(actors);
+
+             // Creates an element to have the rating displayed
+             var rating = $("<p>").text("Rating: " + response.Rated);
+             // Displays the rating
+             col2.append(rating);
 
         })
     }

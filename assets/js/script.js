@@ -72,9 +72,9 @@ $(document).ready(function () {
             col2.append(actors);
 
              // Creates an element to have the rating displayed
-             var rating = $("<p>").text("Rating: " + response.Rated);
+            var rating = $("<p>").text("Rating: " + response.Rated);
              // Displays the rating
-             col2.append(rating);
+            col2.append(rating);
 
         })
     }
@@ -91,7 +91,7 @@ $(document).ready(function () {
 
             // displays new search on the displayed movie search history card
             var movieTitle = $("<h6>").addClass("card-body").text(searchedMovie);
-            var card = $("<div>").addClass("card");
+            var card = $("<div>").addClass("card movieSearches");
             card.append(movieTitle);
             $("#search-history").append(card);
 
